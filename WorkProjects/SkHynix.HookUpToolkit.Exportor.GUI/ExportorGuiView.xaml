@@ -1,0 +1,430 @@
+﻿<Window x:Class="SkHynix.HookUpToolkit.Exportor.GUI.ExportorGuiView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SkHynix.HookUpToolkit.Exportor.GUI"
+        mc:Ignorable="d"
+        Title="FBX / NWC Exportor"
+        SizeToContent="Manual"
+        MinWidth="600"
+        Width="600"
+        MinHeight="580"
+        Height="580"
+        WindowStartupLocation="CenterScreen">
+  <Window.DataContext>
+    <local:ExportorGuiVM x:Name="ViewModel"/>
+  </Window.DataContext>
+  <Window.Resources>
+    <Style TargetType="Button">
+      <Setter Property="Width" Value="75"/>
+      <Setter Property="Height" Value="25"/>
+    </Style>
+    <Style TargetType="TextBlock">
+      <Style.Triggers>
+        <Trigger Property="IsEnabled" Value="False">
+          <Setter Property="TextBlock.Foreground" Value="Gray"/>
+        </Trigger>
+      </Style.Triggers>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style TargetType="ComboBox">
+      <Style.Triggers>
+        <Trigger Property="IsEnabled" Value="False">
+          <Setter Property="Foreground" Value="Gray"/>
+        </Trigger>
+      </Style.Triggers>
+    </Style>
+    <local:VisibilityValueConverter x:Key="VisibilityConverter"/>
+  </Window.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="1*"/>
+      <RowDefinition Height="auto"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="auto"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+
+    <!--저장위치 설정-->
+    <Grid Grid.Row="0" Grid.ColumnSpan="2"
+          Margin="5"
+          IsEnabled="{Binding CannotSetting}">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="auto"/>
+        <ColumnDefinition Width="1*"/>
+        <ColumnDefinition Width="auto"/>
+      </Grid.ColumnDefinitions>
+
+      <TextBlock Grid.Column="0" 
+                 Text="저장 위치: "/>
+      <TextBox Grid.Column="1" 
+               MinWidth="300"
+               Margin="5 0 5 0"
+               Text="{Binding ExportSaveDirectory}"
+               VerticalContentAlignment="Center"
+               IsReadOnly="True"/>
+      <Button Grid.Column="2"
+              Content="선택"
+              Width="50"
+              Command="{Binding CmdSelectDirectory}"/>
+    </Grid>
+
+    <StackPanel Grid.Row="1" Grid.ColumnSpan="2"
+                Orientation="Horizontal"
+                Margin="5"
+                IsEnabled="{Binding CannotSetting}">
+      <RadioButton GroupName="Exportor"
+                   IsChecked="{Binding IsFbxExportor}"
+                   Margin="0 0 10 0">
+        <RadioButton.Content>
+          <TextBlock Text="FBX Export"/>
+        </RadioButton.Content>
+      </RadioButton>
+      <RadioButton GroupName="Exportor"
+                   IsChecked="{Binding IsNwcExportor}" Height="15">
+        <RadioButton.Content>
+          <TextBlock Text="NWC Export (Navisworks)"/>
+        </RadioButton.Content>
+      </RadioButton>
+    </StackPanel>
+
+    <GroupBox Grid.Row="2" Grid.Column="0"
+              Margin="5"
+              Header="실행 설정"
+              IsEnabled="{Binding CannotSetting}"
+              Visibility="{Binding IsNwcExportor, Converter={StaticResource VisibilityConverter}}">
+      <Grid IsEnabled="{Binding IsNwcExportor}">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="auto"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0"
+                   Margin="5"
+                   Text="실행 시간:"/>
+        <StackPanel Grid.Row="0" Grid.Column="1"
+                    Grid.ColumnSpan="2"
+                    Orientation="Horizontal"
+                    Margin="3">
+          <ComboBox ItemsSource="{Binding HourList}"
+                    SelectedItem="{Binding StartHour}"
+                    Width="45"/>
+          <TextBlock Margin="2 0 5 0"
+                     Text="시"/>
+          <ComboBox ItemsSource="{Binding MinuteList}"
+                    SelectedItem="{Binding StartMinute}"
+                    Width="45"/>
+          <TextBlock Margin="2 0 0 0"
+                     Text="분"/>
+        </StackPanel>
+        <TextBlock Grid.Row="1" Grid.Column="0"
+                   Margin="5"
+                   Text="반복 횟수:"/>
+        <TextBox Grid.Row="1" Grid.Column="1"
+                 Margin="3"
+                 Text="{Binding NumOfRepeat}"
+                 PreviewKeyDown="TextBox_PreviewKeyDown"
+                 PreviewTextInput="TextBox_OnlyNumberInput"/>
+        <TextBlock Grid.Row="1" Grid.Column="2"
+                   Margin="5"
+                   Text="회"/>
+        <TextBlock Grid.Row="2" Grid.Column="0"
+                   Margin="5"
+                   Text="반복 간격:"/>
+        <TextBox Grid.Row="2" Grid.Column="1"
+                 Margin="3"
+                 Text="{Binding RepeatTerm}"
+                 PreviewKeyDown="TextBox_PreviewKeyDown"
+                 PreviewTextInput="TextBox_NumberInput"/>
+        <TextBlock Grid.Row="2" Grid.Column="2"
+                   Margin="5"
+                   Text="분"/>
+      </Grid>
+    </GroupBox>
+    <StackPanel Grid.Row="2" Grid.Column="1"
+                Margin="5 10 5 5"
+                Orientation="Horizontal"
+                VerticalAlignment="Top"
+                IsEnabled="{Binding CannotSetting}"
+                Visibility="{Binding IsNwcExportor, Converter={StaticResource VisibilityConverter}}">
+      <TextBlock Text="옵션: "/>
+      <TextBox Margin="5" 
+               Width="265" Height="25"
+               Text="{Binding NwcExportOptionFile}"
+               IsReadOnly="True"/>
+      <Button Content="선택"
+              Width="50"
+              Command="{Binding CmdSelectNwcOption}"/>
+    </StackPanel>
+
+    <!--설정-->
+    <GroupBox Grid.Row="2" Grid.Column="1"
+              Margin="5"
+              IsEnabled="{Binding IsEnableSetting}"
+              Visibility="{Binding IsFbxExportor, Converter={StaticResource VisibilityConverter}}">
+      <GroupBox.Header>
+        <TextBlock Text="설정"/>
+      </GroupBox.Header>
+      <Grid>
+        <Grid.RowDefinitions>
+          <!--0: 내보내기 모드-->
+          <RowDefinition Height="auto"/>
+          <!--1: Grid 기준으로 뷰 자르기-->
+          <RowDefinition Height="auto"/>
+          <!--2: 내보낼 파일-->
+          <RowDefinition Height="auto"/>
+          <!--3: Grid / Level-->
+          <RowDefinition Height="auto"/>
+          <!--4: Offset-->
+          <RowDefinition Height="auto"/>
+          <!--5: A Setting-->
+          <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="auto"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!--#region 내보내기 모드-->
+        <RadioButton GroupName="Mode"
+                     Margin="5"
+                     Grid.Row="0"
+                     Grid.Column="0"
+                     Content="Grid 기준으로 내보내기"
+                     IsChecked="{Binding IsGridMode}"/>
+        <RadioButton GroupName="Mode"
+                     Grid.Row="0"
+                     Grid.Column="1"
+                     Margin="5"
+                     Content="A 기준으로 내보내기"
+                     IsChecked="{Binding IsAMode}"/>
+
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1"
+                    Orientation="Vertical"
+                    Margin="5 0 0 0">
+          <CheckBox Content="Grid 기준으로 뷰 자르기"
+                    IsChecked="{Binding IsCropGrid}"
+                    IsEnabled="{Binding IsAMode}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2"
+                Orientation="Horizontal"
+                Margin="5"
+                Grid.ColumnSpan="2">
+          <RadioButton GroupName="ExportObject"
+                   Content="FBX+CSV"
+                   IsChecked="{Binding IsExportFbxAndCsv}"/>
+          <RadioButton GroupName="ExportObject"
+                   Margin="10 0 10 0"
+                   Content="FBX"
+                   IsChecked="{Binding IsExportFbx}"/>
+          <RadioButton GroupName="ExportObject"
+                   Content="CSV"
+                   IsChecked="{Binding IsExportCsv}"/>
+        </StackPanel>
+        <!--#endregion-->
+
+        <!--#region 설정-->
+        <!--Grid-->
+        <StackPanel Grid.Row="3" Grid.Column="0"
+                    Orientation="Vertical"
+                    Margin="5"
+                    IsEnabled="{Binding IsGridMode}">
+          <StackPanel Margin="0 0 0 3"
+                      Orientation="Horizontal">
+            <TextBlock Text="시작 Grid: "/>
+            <ComboBox Width="50"
+                      ItemsSource="{Binding XGridList}"
+                      SelectedItem="{Binding StartXGrid}"/>
+            <ComboBox Width="50" Margin="5 0 15 0"
+                      ItemsSource="{Binding YGridList}"
+                      SelectedItem="{Binding StartYGrid}"/>
+          </StackPanel>
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="종료 Grid: "/>
+            <ComboBox Width="50"
+                      ItemsSource="{Binding XGridList}"
+                      SelectedItem="{Binding EndXGrid}"/>
+            <ComboBox Width="50" Margin="5 0 15 0"
+                      ItemsSource="{Binding YGridList}"
+                      SelectedItem="{Binding EndYGrid}"/>
+          </StackPanel>
+        </StackPanel>
+
+        <!--Level-->
+        <StackPanel Grid.Row="3" Grid.Column="1"
+                    Orientation="Vertical"
+                    Margin="5">
+          <StackPanel Margin="0 0 0 3"
+                      Orientation="Horizontal">
+            <TextBlock Text="시작 Level: "/>
+            <ComboBox Width="70"
+                      ItemsSource="{Binding LevelList}"
+                      SelectedItem="{Binding StartLevel}"/>
+          </StackPanel>
+          <StackPanel Margin="0 0 0 3"
+                      Orientation="Horizontal">
+            <TextBlock Text="종료 Level: "/>
+            <ComboBox Width="70"
+                      ItemsSource="{Binding LevelList}"
+                      SelectedItem="{Binding EndLevel}"/>
+          </StackPanel>
+        </StackPanel>
+
+        <!--Offset-->
+        <StackPanel Grid.Row="4" Grid.ColumnSpan="2"
+                    Orientation="Horizontal"
+                    Margin="5"
+                    IsEnabled="{Binding IsGridMode}">
+          <TextBlock Text="Offset: "/>
+          <TextBox Width="100"
+                   Text="{Binding Offset}"
+                   PreviewKeyDown="TextBox_PreviewKeyDown"
+                   PreviewTextInput="TextBox_OnlyNumberInput"/>
+        </StackPanel>
+
+        <!--A Setting-->
+        <StackPanel Grid.Row="5" Grid.ColumnSpan="2"
+                    IsEnabled="{Binding IsAMode}"
+                    Margin="5">
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Project Code: "/>
+            <TextBox Width="100"
+                     Text="{Binding ProjectCode}"/>
+          </StackPanel>
+          <StackPanel Orientation="Horizontal"
+                      Margin="0 5 0 0">
+            <CheckBox VerticalAlignment="Center"
+                      IsChecked="{Binding IsSingleA}">
+              <TextBlock Text="단일 A: "/>
+            </CheckBox>
+            <TextBox Width="230"
+                     IsEnabled="{Binding IsSingleA}"
+                     Text="{Binding AName}"/>
+          </StackPanel>
+        </StackPanel>
+        <!--#endregion-->
+      </Grid>
+
+    </GroupBox>
+
+    <!-- 내보내기 파일 목록 -->
+    <Grid Grid.Row="3" Grid.ColumnSpan="2"
+          Margin="5">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="auto"/>
+        <RowDefinition Height="1*"/>
+      </Grid.RowDefinitions>
+
+      <StackPanel Grid.Row="0" Margin="0 0 0 5"
+                  Orientation="Horizontal"
+                  HorizontalAlignment="Right"
+                  IsEnabled="{Binding CannotSetting}">
+        <Button Width="25" Height="25"
+                Margin="0 0 5 0"
+                Content="+"
+                Command="{Binding CmdAddingFiles}"/>
+        <Button Width="25" Height="25"
+                Content="-"
+                Command="{Binding CmdRemoveFiles}"/>
+      </StackPanel>
+
+      <DataGrid Grid.Row="1" MinWidth="400"
+                MinHeight="150"
+                ItemsSource="{Binding ExportFileInfos}"
+                IsReadOnly="True"
+                HeadersVisibility="Column"
+                RowHeaderWidth="0"
+                AutoGenerateColumns="False"
+                HorizontalScrollBarVisibility="Auto"
+                VerticalScrollBarVisibility="Auto"
+                CanUserAddRows="False"
+                CanUserReorderColumns="False"
+                CanUserResizeRows="False"
+                CanUserDeleteRows="False"
+                >
+        <DataGrid.ColumnHeaderStyle>
+          <Style TargetType="DataGridColumnHeader">
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+          </Style>
+        </DataGrid.ColumnHeaderStyle>
+        <DataGrid.CellStyle>
+          <Style TargetType="DataGridCell">
+            <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+          </Style>
+        </DataGrid.CellStyle>
+        <DataGrid.Columns>
+          <DataGridTemplateColumn CanUserResize="False">
+            <DataGridTemplateColumn.Header>
+              <CheckBox IsChecked="{Binding ElementName=ViewModel, Path=IsAllChecked}"/>
+            </DataGridTemplateColumn.Header>
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <CheckBox IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"/>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+          <DataGridTextColumn Width="35" Header="번호"
+                              Binding="{Binding Sequence}"/>
+          <DataGridTextColumn Width="1*" Header="파일 이름" 
+                              Binding="{Binding FileName}">
+            <DataGridTextColumn.ElementStyle>
+              <Style TargetType="TextBlock">
+                <Setter Property="TextAlignment" Value="Left"/>
+              </Style>
+            </DataGridTextColumn.ElementStyle>
+          </DataGridTextColumn>
+          <DataGridTextColumn Width="70" Header="상태"
+                              Binding="{Binding State}"/>
+          <DataGridTextColumn Width="80" Header="소요 시간"
+                              Binding="{Binding ElapsedTimeStr}"/>
+        </DataGrid.Columns>
+      </DataGrid>
+    </Grid>
+
+    <!--버튼-->
+    <Grid Grid.Row="4" Grid.ColumnSpan="2"
+          Margin="5">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="1*"/>
+        <ColumnDefinition Width="auto"/>
+      </Grid.ColumnDefinitions>
+      <StackPanel Grid.Column="0"
+                  VerticalAlignment="Center">
+        <CheckBox IsChecked="{Binding IsAutoClose}"
+                  Content="실행 후 자동 창 닫기"/>
+      </StackPanel>
+      <StackPanel Grid.Column="1"
+                  Orientation="Horizontal">
+        <Button Content="중단"
+                IsEnabled="{Binding CanStopMode}"
+                Command="{Binding CmdStopMode}"/>
+        <Button Margin="5 0 5 0"
+                Content="실행하기"
+                IsEnabled="{Binding CannotSetting}"
+                Command="{Binding CmdFbxExport}"
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+        <Button Content="닫기"
+                IsCancel="True"
+                Command="{Binding CmdClose}"
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+      </StackPanel>
+    </Grid>
+  </Grid>
+</Window>

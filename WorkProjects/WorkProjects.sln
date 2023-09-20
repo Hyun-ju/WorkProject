@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31019.35
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "WPF", "WPF\WPF.shproj", "{A15837D0-ADB9-49E5-BF2C-5A1750455F45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkHynix.HookUpToolkit.Exportor.GUI", "SkHynix.HookUpToolkit.Exportor.GUI\SkHynix.HookUpToolkit.Exportor.GUI.csproj", "{E4614E92-0F5E-407A-89F2-55D0110391F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkHynix.HookUpToolkit.Exportor.IPC", "SkHynix.HookUpToolkit.Exportor.IPC\SkHynix.HookUpToolkit.Exportor.IPC.csproj", "{19641470-9392-4F6A-81B8-DED865884145}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkHynix.HookUpToolkit", "SkHynix.HookUpToolkit\SkHynix.HookUpToolkit.csproj", "{52896BF4-D457-4D04-9EDC-C2BE4C51D446}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		WPF\WPF.projitems*{52896bf4-d457-4d04-9edc-c2be4c51d446}*SharedItemsImports = 4
+		WPF\WPF.projitems*{a15837d0-adb9-49e5-bf2c-5a1750455f45}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E4614E92-0F5E-407A-89F2-55D0110391F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4614E92-0F5E-407A-89F2-55D0110391F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4614E92-0F5E-407A-89F2-55D0110391F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4614E92-0F5E-407A-89F2-55D0110391F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19641470-9392-4F6A-81B8-DED865884145}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19641470-9392-4F6A-81B8-DED865884145}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19641470-9392-4F6A-81B8-DED865884145}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19641470-9392-4F6A-81B8-DED865884145}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52896BF4-D457-4D04-9EDC-C2BE4C51D446}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52896BF4-D457-4D04-9EDC-C2BE4C51D446}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52896BF4-D457-4D04-9EDC-C2BE4C51D446}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52896BF4-D457-4D04-9EDC-C2BE4C51D446}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {33F18BE2-A18F-4AEF-A193-014D628FFAD3}
+	EndGlobalSection
+EndGlobal

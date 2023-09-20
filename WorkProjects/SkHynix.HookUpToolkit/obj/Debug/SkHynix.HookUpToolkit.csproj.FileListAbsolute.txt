@@ -1,0 +1,6 @@
+C:\Users\hyunb\Desktop\WorkProject\WorkProject\WorkProjects\SkHynix.HookUpToolkit\obj\Debug\SkHynix.HookUpToolkit.csprojAssemblyReference.cache
+C:\Users\hyunb\Desktop\WorkProject\WorkProject\WorkProjects\SkHynix.HookUpToolkit\obj\Debug\FbxNwcExportor\FbxExportOptionView.g.cs
+C:\Users\hyunb\Desktop\WorkProject\WorkProject\WorkProjects\SkHynix.HookUpToolkit\obj\Debug\FbxNwcExportor\NavisworksExportView.g.cs
+C:\Users\hyunb\Desktop\WorkProject\WorkProject\WorkProjects\SkHynix.HookUpToolkit\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\hyunb\Desktop\WorkProject\WorkProject\WorkProjects\SkHynix.HookUpToolkit\obj\Debug\SkHynix.HookUpToolkit_MarkupCompile.cache
+C:\Users\hyunb\Desktop\WorkProject\WorkProject\WorkProjects\SkHynix.HookUpToolkit\obj\Debug\SkHynix.HookUpToolkit_MarkupCompile.lref
